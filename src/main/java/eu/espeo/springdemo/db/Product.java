@@ -46,6 +46,7 @@ public class Product {
 
 	@ManyToMany(mappedBy = "products")
 	@ToString.Exclude
+	@Builder.Default
 	private List<Order> orders = new java.util.ArrayList<>();
 
 	@Override

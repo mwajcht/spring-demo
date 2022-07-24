@@ -5,6 +5,5 @@ spring:
     username: mytestdb
     password: mytestdb
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
