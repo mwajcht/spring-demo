@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import eu.espeo.springdemo.domain.BuyerService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/buyers", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/buyers", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class BuyerController {
 
@@ -32,10 +33,10 @@ public class BuyerController {
 
 	@GetMapping(value = "/{buyerId}")
 	public BuyerDto getBuyer(@PathVariable("buyerId") String buyerId) {
-		return BuyerDto.fromBuyer(buyerService.findById(UUID.fromString(buyerId)));
+		return BuyerDto.fromBuyer(buyerService.findByBusinessId(UUID.fromString(buyerId)));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public BuyerDto create(@RequestBody BuyerDto buyerDto) {
 		return BuyerDto.fromBuyer(buyerService.create(buyerDto.toBuyer()));
 	}

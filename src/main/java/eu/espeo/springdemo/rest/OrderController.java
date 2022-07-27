@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import eu.espeo.springdemo.domain.OrderService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/orders", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -32,10 +33,10 @@ public class OrderController {
 
 	@GetMapping(value = "/{orderId}")
 	public FullOrderDto getOrder(@PathVariable("orderId") String orderId) {
-		return FullOrderDto.fromOrder(orderService.findById(UUID.fromString(orderId)));
+		return FullOrderDto.fromOrder(orderService.findByBusinessId(UUID.fromString(orderId)));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public OrderDto create(@RequestBody OrderDto orderDto) {
 		return OrderDto.fromOrder(orderService.create(orderDto.toOrder()));
 	}

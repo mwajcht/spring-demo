@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import eu.espeo.springdemo.domain.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/products", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -32,10 +33,10 @@ public class ProductController {
 
 	@GetMapping(value = "/{productId}")
 	public ProductDto getProduct(@PathVariable("productId") String productId) {
-		return ProductDto.fromProduct(productService.findById(UUID.fromString(productId)));
+		return ProductDto.fromProduct(productService.findByBusinessId(UUID.fromString(productId)));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ProductDto create(@RequestBody ProductDto productDto) {
 		return ProductDto.fromProduct(productService.create(productDto.toProduct()));
 	}

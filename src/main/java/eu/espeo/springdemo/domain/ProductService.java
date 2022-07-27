@@ -23,7 +23,7 @@ public class ProductService {
 	}
 
 
-	public Product findById(UUID businessId) {
+	public Product findByBusinessId(UUID businessId) {
 		return productRepository.findByBusinessId(businessId)
 				.map(eu.espeo.springdemo.db.Product::toProduct)
 				.orElseThrow();

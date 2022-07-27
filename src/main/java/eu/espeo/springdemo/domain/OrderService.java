@@ -28,7 +28,7 @@ public class OrderService {
 	}
 
 
-	public Order findById(UUID businessId) {
+	public Order findByBusinessId(UUID businessId) {
 		return orderRepository.findByBusinessId(businessId).toOrder();
 	}
 
