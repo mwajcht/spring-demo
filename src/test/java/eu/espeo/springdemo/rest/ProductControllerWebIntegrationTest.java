@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -26,13 +27,14 @@ class ProductControllerWebIntegrationTest {
         var productBusinessId = UUID.randomUUID();
         var productName = "Apple MacBook";
         var price = BigDecimal.valueOf(11499.90);
-        var productDto = new ProductDto(productBusinessId, productName, price);
 
         // when
-        restTemplate.postForObject("http://localhost:" + port + "/products", productDto, ProductDto.class);
+        var createResponse = restTemplate
+                .postForEntity("http://localhost:" + port + "/products",
+                        new ProductDto(productBusinessId, productName, price), ProductDto.class);
+        then(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         var product = restTemplate.getForObject(
-                "http://localhost:" + port + "/products/" + productBusinessId,
-                ProductDto.class);
+                "http://localhost:" + port + "/products/" + productBusinessId, ProductDto.class);
 
         // then
         then(product).isNotNull();

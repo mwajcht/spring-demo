@@ -15,4 +15,7 @@ public interface ProductRepository extends CrudRepository<Product,Integer> {
 	Optional<Product> findByBusinessId(UUID businessId);
 
 	void deleteByBusinessId(UUID businessId);
+
+	// will compile even with incorrect return type
+	String findByName(String name);
 }

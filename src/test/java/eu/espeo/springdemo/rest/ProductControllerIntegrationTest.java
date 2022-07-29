@@ -1,5 +1,7 @@
 package eu.espeo.springdemo.rest;
 
+import eu.espeo.springdemo.db.ProductRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +16,9 @@ class ProductControllerIntegrationTest {
 
     @Autowired
     private ProductController sut;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
     void shouldSaveAndRetrieveProduct() {
@@ -31,5 +36,17 @@ class ProductControllerIntegrationTest {
         then(product.businessId()).isEqualTo(productBusinessId);
         then(product.name()).isEqualTo(productName);
         then(product.price()).isEqualByComparingTo(price);
+    }
+
+    @Test
+    @Disabled //will throw an exception on runtime
+    void testWrongReturnType() {
+        var productBusinessId = UUID.randomUUID();
+        var productName = "NewProduct";
+        var price = BigDecimal.valueOf(10.5);
+
+        // when
+        sut.create(new ProductDto(productBusinessId, productName, price));
+        String product = productRepository.findByName(productName);
     }
 }
